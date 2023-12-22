@@ -8,4 +8,4 @@ $_SESSION = array();
 session_destroy();
 
 // Redirect to the index page
-header('location:../index.php');
+header('location:index.php');

@@ -213,7 +213,7 @@ else
                                 <i class="fa fa-star"></i>
                             </div>
                             <p>
-                                Tôi chưa thấy túi nào đẹp như này, tôi rất thích nó
+                                Túi nhà tui thì tất nhiên là phải đẹp và xịn rồi
                             </p>
                         </div>
                     </div>
@@ -249,13 +249,10 @@ else
                             <h3>Nhân viên Tiệm Nhà Túi</h3>
                             <div class="ratting">
                                 <i class="fa fa-star"></i>
-                                <!-- <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i> -->
                             </div>
                             <p>
-                                Shop rep tin nhắn quá lâu, đánh giá 1 sao
+                                Ăn một quả khế trả một cục vàng, mua túi nhà tui mang theo mà đựng
                             </p>
                         </div>
                     </div>

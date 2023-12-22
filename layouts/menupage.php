@@ -30,30 +30,30 @@
                     <a href="product-list.php" class="nav-item nav-link <?php echo $activeClass; ?>">Danh sách sản
                         phẩm</a>
                     <!-- <?php
-                    if ($currentPageName === 'product-detail.php') {
-                        $activeClass = 'active';
-                    } else {
-                        $activeClass = '';
-                    }
-                    ?>
+                            if ($currentPageName === 'product-detail.php') {
+                                $activeClass = 'active';
+                            } else {
+                                $activeClass = '';
+                            }
+                            ?>
                     <a href="product-detail.php" class="nav-item nav-link <?php echo $activeClass; ?>">Chi tiết sản
                         phẩm</a> -->
                     <!-- <?php
-                    if ($currentPageName === 'cart.php') {
-                        $activeClass = 'active';
-                    } else {
-                        $activeClass = '';
-                    }
-                    ?>
+                            if ($currentPageName === 'cart.php') {
+                                $activeClass = 'active';
+                            } else {
+                                $activeClass = '';
+                            }
+                            ?>
                     <a href="cart.php" class="nav-item nav-link <?php echo $activeClass; ?>">Giỏ hàng</a> -->
 
                     <!-- <?php
-                    if ($currentPageName === 'checkout.php') {
-                        $activeClass = 'active';
-                    } else {
-                        $activeClass = '';
-                    }
-                    ?>
+                            if ($currentPageName === 'checkout.php') {
+                                $activeClass = 'active';
+                            } else {
+                                $activeClass = '';
+                            }
+                            ?>
                     <a href="checkout.php" class="nav-item nav-link <?php echo $activeClass; ?>">Thanh toán</a> -->
 
                     <!-- <?php
@@ -70,17 +70,18 @@
                 <div class="navbar-nav ml-auto">
                     <?php
                     if (isset($_SESSION['user'])) {
-                        ?>
+                    ?>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Xin chào,
                             <?php echo $_SESSION['user'] ?></a>
                         <div class="dropdown-menu">
+                            <a href="my-account.php" class="dropdown-item">Tài khoản</a>
                             <a href="logout.php" class="dropdown-item">Đăng xuất</a>
                         </div>
                     </div>
                     <?php
                     } else {
-                        ?>
+                    ?>
                     <a href="login.php" class="nav-item nav-link">Đăng nhập</a>
                     <?php
                     }

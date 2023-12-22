@@ -4,7 +4,6 @@ session_start();
 require_once 'utils/dbhelper.php';
 require_once 'functions.php';
 
-
 $sql9 = 'SELECT sp.*, hinh.hinhanh AS hinhanhchinh
          FROM sanpham sp
          LEFT JOIN hinhanhsanpham hinh ON sp.masp = hinh.masp
@@ -29,7 +28,7 @@ $spList = executeResult($sql9);
         <div class="container-fluid">
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.php">Trang chủ</a></li>
-                <li class="breadcrumb-item"><a href="product-list.php">Sản phẩm</a></li>
+                <li class="breadcrumb-item"><a href="product-list.php">Danh sách sản phẩm</a></li>
                 <li class="breadcrumb-item active">Giỏ hàng</li>
             </ul>
         </div>
@@ -75,16 +74,12 @@ $spList = executeResult($sql9);
                                                 <td><?php echo vnd($value['gia']) ?><sup>đ</sup></td>
                                                 <td>
                                                     <div class="qty">
-                                                        <button class="btn-minus" <?php echo ($value['quantity'] <= 1) ? 'disabled' : ''; ?>>
-                                                            <a href="controller/themhangcontroller.php?masp=<?php echo $value['masp'] ?>&action=min">
-                                                                <i class="fa fa-minus"></i>
-                                                            </a>
+                                                        <button class="btn-minus" data-masp="<?php echo $value['masp']; ?>" data-action="min" <?php echo ($value['quantity'] <= 1) ? 'disabled' : ''; ?>>
+                                                            <i class="fa fa-minus"></i>
                                                         </button>
                                                         <input type="text" value="<?php echo $value['quantity'] ?>" readonly="readonly">
-                                                        <button class="btn-plus" <?php echo ($value['quantity'] >= $item['soluong']) ? 'disabled' : ''; ?>>
-                                                            <a href="controller/themhangcontroller.php?masp=<?php echo $value['masp'] ?>&action=max">
-                                                                <i class="fa fa-plus"></i>
-                                                            </a>
+                                                        <button class="btn-plus" data-masp="<?php echo $value['masp']; ?>" data-action="max" <?php echo ($value['quantity'] >= $item['soluong']) ? 'disabled' : ''; ?>>
+                                                            <i class="fa fa-plus"></i>
                                                         </button>
                                                     </div>
                                                 </td>

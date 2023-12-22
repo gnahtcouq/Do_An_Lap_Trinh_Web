@@ -20,7 +20,7 @@
 
     <div class="login">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row justify-content-center align-items-center">
                 <div class="col-lg-6">
                     <div class="login-form">
                         <?php
@@ -42,11 +42,10 @@
                         <?php
                         // Check for error parameter in the URL
                         if (isset($_GET['error']) && $_GET['error'] == 1) {
-                            echo '<p style="color: red;">Sai tên đăng nhập hoặc mật khẩu. Vui lòng thử lại!</p>';
+                            echo '<p style="color: red; margin-top: 10px">Sai tên đăng nhập hoặc mật khẩu. Vui lòng thử lại!</p>';
                         }
                         ?>
-                        <p style="margin-top: 20px; text-align: right">Bạn chưa có tài khoản? <a
-                                href="register.php">Đăng ký ngay</a></p>
+                        <p style="margin-top: 30px; text-align: center">Bạn chưa có tài khoản? <a href="register.php">Đăng ký ngay</a></p>
                     </div>
                 </div>
             </div>

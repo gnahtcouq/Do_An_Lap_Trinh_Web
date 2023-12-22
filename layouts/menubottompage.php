@@ -19,7 +19,7 @@ function total_item($cart) {
                     </a>
                 </div>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-6">
                 <div class="search">
                     <form action="product-list.php" method="GET">
                         <input type="text" name="search" placeholder="Tìm kiếm">
@@ -27,7 +27,7 @@ function total_item($cart) {
                     </form>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="user">
                     <a href="cart.php" class="btn cart">
                         <i class="fa fa-shopping-cart"></i>

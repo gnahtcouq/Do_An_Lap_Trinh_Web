@@ -28,14 +28,13 @@ $spList = executeResult($sql);
 
 // Xử lý các yêu cầu tìm kiếm
 if (isset($_GET['search'])) {
-    $search = $_GET['search'];
-    // Sửa đổi truy vấn SQL để tìm kiếm
+    $search = isset($_GET['search']) ? mysqli_real_escape_string($con, $_GET['search']) : '';  // Escape the search term to prevent SQL injection
     $sql = "SELECT sp.*, hinh.hinhanh AS hinhanhchinh
-            FROM sanpham sp
-            LEFT JOIN hinhanhsanpham hinh ON sp.masp = hinh.masp
-            WHERE sp.tensp LIKE '%$search%'
-            GROUP BY sp.masp
-            ORDER BY sp.masp DESC";
+        FROM sanpham sp
+        LEFT JOIN hinhanhsanpham hinh ON sp.masp = hinh.masp
+        WHERE sp.tensp LIKE '%$search%' OR sp.thongtin LIKE '%$search%'
+        GROUP BY sp.masp
+        ORDER BY sp.masp DESC";
 
     // Thêm LIMIT và OFFSET để phân trang
     $sql .= " LIMIT $offset, $productsPerPage";
@@ -47,7 +46,6 @@ if (isset($_GET['search'])) {
         $spList = $result;
     } else {
         $spList = []; // Đặt một mảng trống nếu không tìm thấy kết quả
-
     }
 }
 ?>

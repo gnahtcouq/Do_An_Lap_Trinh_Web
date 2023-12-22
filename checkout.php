@@ -12,9 +12,14 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
+if (!isset($_SESSION['cart']) && !is_array($_SESSION['cart'])) {
+    header('location: product-list.php');
+    exit();
+}
+
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
-    $sql      = 'select * from users where username = "' . $user . '"';
+    $sql = 'select * from users where username = "' . $user . '"';
     $user = executeSingleResult($sql);
     if ($user != null) {
         $ho = $user['ho'];
@@ -51,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_DatHang'])) {
     if ($isValidOrder) {
         // Nếu đặt hàng thành công, xóa giỏ hàng và chuyển hướng đến trang thông báo thành công
         unset($_SESSION['cart']);
-        header('location:../userpage/order-success.php');
+        header('location:order-success.php');
         exit();
     } else {
         // Nếu có lỗi, có thể hiển thị thông báo hoặc thực hiện các xử lý khác
@@ -72,43 +77,24 @@ function validateAndPlaceOrder() {
         }
     }
 
-    $sql2 = 'SELECT * FROM khachhang WHERE makh = "' . $id . '"';
-    $user = executeSingleResult($sql2);
-    if ($user == null) {
-        $makh = $id;
-        $ho = $_POST['ho'];
-        $ten = $_POST['ten'];
-        $sdt = $_POST['sdt'];
-        $diachi = $_POST['diachi'];
-        $sql3 = 'INSERT INTO khachhang(makh,tenkh,diachi,sdt) VALUES("' . $makh . '","' . $ho . ' ' . $ten . '","' . $diachi . '","' . $sdt . '")';
-        execute($sql3);
-    }
-
     $ngaydh = date('Y-m-d H:i:s');
-    $pttt = $_POST['payment'];
-    $id_order = rand(1, 10000);
+    $pttt = ($_POST['payment'] == 'on') ? 'Thanh toán khi nhận hàng' : $_POST['payment'];
+    $id_order = 'ddh' . time();
     $tongtien = $_POST['tongtien'];
+    $trangthai = 'Chưa xử lý';
 
-    $sql4 = 'INSERT INTO dondathang(maddh, makh, tongtienhang, pttt, ngaydh) VALUES("ddh' . $id_order . '","' . $id . '","' . $tongtien . ' VND","' . $pttt . '","' . $ngaydh . '")';
+    $insertDonDatHang = 'INSERT INTO dondathang(maddh, makh, tongtienhang, pttt, ngaydh, trangthai) VALUES("' . $id_order . '","' . $id . '","' . $tongtien . '","' . $pttt . '","' . $ngaydh . '","' . $trangthai . '")';
     mysqli_set_charset($con, 'UTF8');
-    $dhh = mysqli_query($con, $sql4);
+    $dhh = mysqli_query($con, $insertDonDatHang);
 
-    if (isset($dhh)) {
-        $cart = (isset($_SESSION['cart'])) ? $_SESSION['cart'] : [];
-        foreach ($cart as $key => $value) {
-            // Giảm số lượng sản phẩm trong cơ sở dữ liệu
-            $sqlUpdateQuantity = 'UPDATE sanpham SET soluong = soluong - ' . $value['quantity'] . ' WHERE masp = "' . $value['masp'] . '"';
-            mysqli_query($con, $sqlUpdateQuantity);
-
-            // Thêm chi tiết đơn đặt hàng vào cơ sở dữ liệu
-            mysqli_query($con, 'INSERT INTO chitietdondathang (maddh, masp, tensp, soluong, dongia, thanhtien) VALUES("ddh' . $id_order . '","' . $value['masp'] . '","' . $value['tensp'] . '","' . $value['quantity'] . '","' . $value['gia'] . '","' . $value['gia'] * $value['quantity'] . '")');
-        }
-
+    if ($dhh) {
+        unset($_SESSION['cart']);
         return true; // Trả về true nếu đặt hàng thành công
     }
 
     return false; // Trả về false nếu có lỗi
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -137,7 +123,7 @@ function validateAndPlaceOrder() {
             <div class="row">
                 <div class="col-lg-6">
                     <div class="checkout-inner">
-                        <form id="checkout-form" method="post" action="checkout.php">
+                        <form id="checkout-form" method="post" action="checkout.php" onsubmit="return validateForm();">
                             <div class="billing-address">
                                 <h2>Địa chỉ thanh toán</h2>
                                 <div class="row">
@@ -158,19 +144,7 @@ function validateAndPlaceOrder() {
                                         <input class="form-control" type="text" name="diachi" placeholder="Địa chỉ" value="<?php echo isset($diachi) ? $diachi : ''; ?>">
                                     </div>
                                 </div>
-                                <!-- <div class="col-md-12">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="newaccount">
-                                    <label class="custom-control-label" for="newaccount">Tạo tài khoản</label>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="shipto">
-                                    <label class="custom-control-label" for="shipto">Vận chuyển đến các địa chỉ khác
-                                        nhau</label>
-                                </div>
-                            </div> -->
+
                             </div>
                             <div class="checkout-payment">
                                 <div class="payment-methods">
@@ -197,49 +171,18 @@ function validateAndPlaceOrder() {
                                             <label class="custom-control-label" for="payment-3">Thanh toán khi nhận
                                                 hàng</label>
                                         </div>
-                                        <!-- <div class="payment-content" id="payment-3-show">
-                                            <p>
-                                                Phí thu hộ: 0<sup>đ</sup>. Ưu đãi về phí vận chuyển (nếu có) áp dụng cả
-                                                với
-                                                phí thu hộ.
-                                            </p>
-                                        </div> -->
                                     </div>
                                 </div>
+                                <input type="hidden" name="tongtien" value="<?php echo $totalPrice + $shippingCost ?>">
+
                                 <div class="checkout-btn">
                                     <button type="submit" name="btn_DatHang">Đặt hàng</button>
                                 </div>
                             </div>
                         </form>
                     </div>
-
-                    <!-- <div class="shipping-address">
-                        <h2>Địa chỉ vận chuyển</h2>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Tên</label> <sup style="color: red;">*</sup>
-                                <input class="form-control" type="text" placeholder="Nhập tên của bạn">
-                            </div>
-                            <div class="col-md-6">
-                                <label>Họ</label> <sup style="color: red;">*</sup>
-                                <input class="form-control" type="text" placeholder="Nhập họ của bạn">
-                            </div>
-                            <div class="col-md-6">
-                                <label>E-mail</label> <sup style="color: red;">*</sup>
-                                <input class="form-control" type="text" placeholder="E-mail">
-                            </div>
-                            <div class="col-md-6">
-                                <label>SDT</label> <sup style="color: red;">*</sup>
-                                <input class="form-control" type="text" placeholder="Nhập SDT">
-                            </div>
-                            <div class="col-md-12">
-                                <label>Địa chỉ</label> <sup style="color: red;">*</sup>
-                                <input class="form-control" type="text" placeholder="Nhập địa chỉ">
-                            </div>
-
-                        </div>
-                    </div> -->
                 </div>
+
                 <div class="col-lg-6">
                     <div class="checkout-inner">
                         <div class="checkout-summary">
@@ -249,17 +192,15 @@ function validateAndPlaceOrder() {
                             <p class="ship-cost">Phí vận chuyển: <span><?php echo vnd($shippingCost); ?></span></p>
                             <h2>Thành tiền: <span><?php echo vnd($totalPrice + $shippingCost); ?></span></h2>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <?php require './layouts/footerpage.php'; ?>
-    <?php require './layouts/footerbottompage.php'; ?>
-    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
-    <?php require './layouts/scriptpage.php'; ?>
+        <?php require './layouts/footerpage.php'; ?>
+        <?php require './layouts/footerbottompage.php'; ?>
+        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+        <?php require './layouts/scriptpage.php'; ?>
 </body>
 
 </html>

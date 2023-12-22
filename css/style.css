@@ -2014,7 +2014,10 @@ h2 {
 .review .review-img {
   width: 100%;
   max-width: 200px;
+  height: 200px;
   overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .review .review-img img {

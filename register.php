@@ -25,7 +25,7 @@ require_once('utils/dbhelper.php');
 
     <div class="login">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row justify-content-center align-items-center">
                 <div class="col-lg-6">
                     <div class="register-form">
                         <form action="controller/registercontroller.php" method="POST" accept-charset="utf-8">

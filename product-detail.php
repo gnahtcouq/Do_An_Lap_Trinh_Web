@@ -8,6 +8,8 @@ if (isset($_GET['masp'])) {
     $masp = $_GET['masp'];
     $sql = 'select * from sanpham where masp = "' . $masp . '"';
     $sanpham = executeSingleResult($sql);
+
+    // Kiểm tra xem sản phẩm có tồn tại không
     if ($sanpham != null) {
         $masp = $sanpham['masp'];
         $tensp = $sanpham['tensp'];
@@ -16,8 +18,13 @@ if (isset($_GET['masp'])) {
         $size = $sanpham['size'];
         $tinhtrang = $sanpham['tinhtrang'];
         $thongtin = $sanpham['thongtin'];
+    } else {
+        // Nếu không tìm thấy sản phẩm, chuyển hướng về trang danh sách sản phẩm
+        header('Location: product-list.php');
+        die();
     }
 } else {
+    // Nếu không có tham số masp, chuyển hướng về trang index
     header('Location: index.php');
     die();
 }

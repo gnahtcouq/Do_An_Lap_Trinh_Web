@@ -1,6 +1,6 @@
 <?php
 
-require_once ('config.php');
+require_once('config.php');
 $con = mysqli_connect(HOST, USERNAME, PASSWORD, DATABASE);
 
 function execute($sql) {
@@ -16,22 +16,36 @@ function execute($sql) {
 }
 
 function executeResult($sql) {
-    //save data into table
     // open connection to database
     $con = mysqli_connect(HOST, USERNAME, PASSWORD, DATABASE);
     mysqli_set_charset($con, 'UTF8');
-    //insert, update, delete
+
+    // insert, update, delete
     $result = mysqli_query($con, $sql);
+
+    // check if the query execution was successful
+    if ($result === false) {
+        // handle the error, for example:
+        echo 'Query execution failed: ' . mysqli_error($con);
+        // you might want to log the error, redirect the user, or handle it in some other way
+        // ...
+
+        // close connection
+        mysqli_close($con);
+        return [];  // return an empty array or false, depending on your error handling strategy
+    }
+
     $data = [];
-    while ($row = mysqli_fetch_array($result, 1)) {
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $data[] = $row;
     }
 
-    //close connection
+    // close connection
     mysqli_close($con);
 
     return $data;
 }
+
 
 function executeSingleResult($sql) {
     //save data into table
