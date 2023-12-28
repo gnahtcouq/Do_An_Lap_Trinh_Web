@@ -17,12 +17,15 @@ $offset = ($page - 1) * $productsPerPage;
 // Truy vấn SQL
 $sqlBase = 'SELECT sp.*, hinh.hinhanh AS hinhanhchinh
             FROM sanpham sp
-            LEFT JOIN hinhanhsanpham hinh ON sp.masp = hinh.masp
-            GROUP BY sp.masp
-            ORDER BY sp.masp DESC';
+            LEFT JOIN hinhanhsanpham hinh ON sp.masp = hinh.masp';
 
-// Hoàn thành truy vấn SQL với LIMIT và OFFSET để phân trang
-$sql = $sqlBase . " LIMIT $offset, $productsPerPage";
+// Check for sorting parameter
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'desc';
+$sortOrder = ($sort == 'asc') ? 'ASC' : 'DESC';
+
+// Construct the SQL query with sorting and pagination
+$sqlBaseWithSorting = $sqlBase . " GROUP BY sp.masp ORDER BY MIN(sp.gia) $sortOrder";
+$sql = $sqlBaseWithSorting . " LIMIT $offset, $productsPerPage";
 
 $spList = executeResult($sql);
 
@@ -65,9 +68,12 @@ if (isset($_GET['search'])) {
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.php">Trang chủ</a></li>
                 <li class="breadcrumb-item active">Danh sách sản phẩm</li>
+                <li class="breadcrumb-item"><a href="?sort=asc">Giá tăng dần</a></li>
+                <li class="breadcrumb-item"><a href="?sort=desc">Giá giảm dần</a></li>
             </ul>
         </div>
     </div>
+
 
     <div class="product-view">
         <div class="container-fluid">
@@ -117,7 +123,7 @@ if (isset($_GET['search'])) {
 
                                     for ($i = 1; $i <= $totalPages; $i++) {
                                         echo '<li class="page-item ' . ($page == $i ? 'active' : '') . '">';
-                                        echo '<a class="page-link" href="?page=' . $i . '">' . $i . '</a>';
+                                        echo '<a class="page-link" href="?page=' . $i . '&sort=' . $sort . '">' . $i . '</a>';
                                         echo '</li>';
                                     }
                                     ?>

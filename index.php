@@ -213,7 +213,7 @@ else
                                 <i class="fa fa-star"></i>
                             </div>
                             <p>
-                                Túi nhà tui thì tất nhiên là phải đẹp và xịn rồi
+                                Túi rất là đẹp nha
                             </p>
                         </div>
                     </div>

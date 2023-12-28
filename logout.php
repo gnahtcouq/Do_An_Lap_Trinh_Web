@@ -2,10 +2,11 @@
 session_start();
 
 // Unset all of the session variables
-$_SESSION = array();
+//$_SESSION = array();
 
-// Destroy the session
-session_destroy();
+$cardList =  $_SESSION['cart'];
+session_unset();
+$_SESSION['cart'] = $cardList;
 
 // Redirect to the index page
 header('location:index.php');
