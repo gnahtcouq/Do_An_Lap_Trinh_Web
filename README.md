@@ -12,7 +12,7 @@
 
 ## Thông tin đồ án
 
->Đề tài: **Xây dựng *trang web bán hàng***
+- Đề tài: **Xây dựng *trang web bán hàng***
 
 ## Yêu cầu đồ án
 
