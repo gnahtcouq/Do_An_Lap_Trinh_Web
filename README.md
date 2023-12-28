@@ -1,4 +1,4 @@
-# ĐỒ ÁN LẬP TRÌNH WEB 1 - fit@hcmus
+# ĐỒ ÁN LẬP TRÌNH WEB - @STU
 ## Thông tin môn học
 - Lớp: **D20_TH11**
 - Học kỳ: **1 (2023-2024)**
