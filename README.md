@@ -19,8 +19,7 @@
 - Xây dựng đồ án bằng **PHP, MySQL, HTML, JS, CSS**
 
 ## Hướng dẫn sử dụng cơ bản
-- Tải và cài đặt: [WampServer ]([https://getcomposer.org/download/](https://sourceforge.net/projects/wampserver/))
-- Mở WampServer
+- Tải và cài đặt [WampServer ]([https://getcomposer.org/download/](https://sourceforge.net/projects/wampserver/)) sau đó khởi động
 - Clone project và đặt trong thư mục mặc định của WampServer `C:\wamp64\www`: 
 >`git clone https://github.com/gnahtcouq/Do_An_Lap_Trinh_Web.git`
 - Tạo database `dbthuchanhweb` và nhập `dbthuchanhweb.sql`
