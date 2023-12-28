@@ -24,3 +24,4 @@
 >`git clone https://github.com/gnahtcouq/Do_An_Lap_Trinh_Web.git`
 - Tạo database `dbthuchanhweb` và nhập `dbthuchanhweb.sql`
 - Thay đổi thông tin cần thiết trong file `config.php` ở thư mục `utils`
+- Truy cập `localhost/Do_An_Lap_Trinh_Web`
